@@ -2,13 +2,15 @@
 #ifndef INCLUDE_TPQUEUE_H_
 #define INCLUDE_TPQUEUE_H_
 
+#include <stdexcept>
+
 template<typename T>
 class TPQueue {
-  private:
+ private:
   struct Node {
     T data;
     Node* next;
-    Node(const T& item) : data(item), next(nullptr) {}
+    explicit Node(const T& item) : data(item), next(nullptr) {}
   };
 
   Node* head;
@@ -23,12 +25,7 @@ class TPQueue {
 
   void push(const T& item) {
     Node* newNode = new Node(item);
-    if (!head) {
-      head = newNode;
-      return;
-    }
-
-    if (item.prior > head->data.prior) {
+    if (!head || item.prior > head->data.prior) {
       newNode->next = head;
       head = newNode;
       return;
